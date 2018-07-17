@@ -13,7 +13,7 @@ end
 
 3.times do
   puts "Введите сторону треугольника: "
-  sides << gets.chomp.to_f
+  sides << gets.to_f
 end
 
 

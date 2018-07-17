@@ -1,7 +1,7 @@
 input = []
 3.times do
   puts "Введите коэффициент: "
-  input << gets.chomp.to_f
+  input << gets.to_f
 end
 a, b, c = input
 

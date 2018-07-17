@@ -1,7 +1,7 @@
 puts "Введите Ваше имя: "
 name = gets.chomp
 puts "Введите Ваш рост:"
-height = gets.chomp.to_i
+height = gets.to_i
 perfect_weight = height - 110
 
 if perfect_weight < 0

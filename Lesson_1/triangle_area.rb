@@ -3,8 +3,8 @@ def triangle_area(area, height)
 end
 
 puts "Введите основание треугольника: "
-area = gets.chomp.to_f
+area = gets.to_f
 puts "Введите высоту треугольника: "
-height = gets.chomp.to_f
+height = gets.to_f
 
 puts "Площадь треугольника #{triangle_area(area, height)}"
