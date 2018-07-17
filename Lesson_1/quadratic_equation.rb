@@ -1,7 +1,7 @@
 input = []
 3.times do
   puts "Введите коэффициент: "
-  input << gets.chomp.to_i
+  input << gets.chomp.to_f
 end
 a, b, c = input
 
@@ -13,8 +13,9 @@ end
 d = b**2 - 4 * a * c
 
 if d > 0
-  x1 = (-b + Math.sqrt(d)) / (2 * a)
-  x2 = (-b - Math.sqrt(d)) / (2 * a)
+  d_root = Math.sqrt(d)
+  x1 = (-b + d_root) / (2 * a)
+  x2 = (-b - d_root) / (2 * a)
   puts "Дискриминант: #{d}. Корни: #{x1} и #{x2}."
 elsif d == 0
   x = -b / (2 * a)

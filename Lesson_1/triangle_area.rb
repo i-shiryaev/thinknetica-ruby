@@ -1,10 +1,10 @@
-def triangle_area(a, h)
-  return 0.5 * a * h
+def triangle_area(area, height)
+  0.5 * area * height
 end
 
 puts "Введите основание треугольника: "
-a = gets.chomp.to_f
+area = gets.chomp.to_f
 puts "Введите высоту треугольника: "
-h = gets.chomp.to_f
+height = gets.chomp.to_f
 
-puts "Площадь треугольника #{triangle_area(a, h)}"
+puts "Площадь треугольника #{triangle_area(area, height)}"
