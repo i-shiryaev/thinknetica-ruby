@@ -1,7 +1,1 @@
-arr = []
-index = 10
-while index <= 100
-  arr << index
-  index += 5
-end
-puts arr
+puts (10..100).step(5).to_a

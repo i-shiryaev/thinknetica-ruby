@@ -1,4 +1,4 @@
-cart = Hash.new
+cart = {}
 final_price = 0
 loop do
   puts "Введите название товара: "
@@ -8,7 +8,7 @@ loop do
   price = gets.to_f
   puts "Введите количество купленного товара"
   amount = gets.to_f
-  cart[name] = { price => amount }
+  cart[name] = { price: price, amount: amount }
 end
 
 # Заполнить и вывести на экран хеш, ключами которого являются названия товаров,
@@ -17,8 +17,7 @@ puts cart
 
 # Также вывести итоговую сумму за каждый товар.
 cart.each do |name, purchase|
-  price = purchase.keys[0]
-  item_price = price * purchase[price]
+  item_price = purchase[:price] * purchase[:amount]
   final_price += item_price
   puts "#{name}, стоимость: #{item_price}"
 end

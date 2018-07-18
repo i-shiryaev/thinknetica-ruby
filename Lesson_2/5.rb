@@ -20,8 +20,5 @@ days_in_month = [31, days_in_february(year), 30, 31, 30, 31, 30, 31, 30, 31, 30]
 if month == 1
   puts day
 else
-  days_in_month[0..month-1].each do |days|
-    day += days
-  end
-  puts day
+  puts days_in_month.first(month - 1).sum(day)
 end
