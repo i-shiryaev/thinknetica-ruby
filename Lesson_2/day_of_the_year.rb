@@ -16,9 +16,4 @@ puts "Введите год: "
 year = gets.to_i
 
 days_in_month = [31, days_in_february(year), 30, 31, 30, 31, 30, 31, 30, 31, 30] # Количество дней в декабре не имеет значения
-
-if month == 1
-  puts day
-else
-  puts days_in_month.first(month - 1).sum(day)
-end
+puts days_in_month.first(month - 1).sum(day)
