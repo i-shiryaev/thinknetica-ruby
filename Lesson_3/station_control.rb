@@ -42,14 +42,10 @@ class Route
     allowed_stations = stations.slice(1...-1) # Так как стартовая и конечная точки маршрута не могут быть удалены.
     stations.delete(station) if allowed_stations.include?(station)
   end
-
-  def stations_list
-    stations
-  end
 end
 
 class Train
-  attr_accessor :speed, :carriages_amount
+  attr_accessor :carriages_amount
   attr_reader :type, :speed, :route, :current_station_index
 
   def initialize(number, type, carriages_amount)
@@ -75,6 +71,11 @@ class Train
     @speed += speed if speed > 0
   end
 
+  def decrease_speed(speed)
+    @speed -= speed
+    @speed = 0 if @speed - speed < 0
+  end
+
   def stop
     @speed = 0
   end
@@ -89,23 +90,23 @@ class Train
 
   def set_route(route)
     @route = route
-    route.stations.first.accept_train(self)
+    route.first_station.accept_train(self)
     @current_station_index = 0
   end
 
   def move_to_next_station
     unless next_station.nil?
-      route.stations[current_station_index].send_train(self)
+      route.current_station.send_train(self)
+      route.next_station.accept_train(self)
       @current_station_index += 1
-      route.stations[current_station_index].accept_train(self)
     end
   end
 
   def move_to_previous_station
     unless previous_station.nil?
-      route.stations[current_station_index].send_train(self)
+      route.current_station.send_train(self)
+      route.previous_station.accept_train(self)
       @current_station_index -= 1
-      route.stations[current_station_index].accept_train(self)
     end
   end
 end
