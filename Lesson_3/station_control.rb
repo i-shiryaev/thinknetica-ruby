@@ -1,5 +1,5 @@
 class Station
-  attr_reader :trains
+  attr_reader :trains, :name
 
   def initialize(name)
     @name = name
@@ -44,9 +44,7 @@ class Route
   end
 
   def show_stations
-    @stations.each do |station|
-      puts station
-    end
+    stations.each{ |station| puts station.name }
   end
 end
 
