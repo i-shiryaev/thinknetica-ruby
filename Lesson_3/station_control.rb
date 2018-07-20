@@ -42,6 +42,12 @@ class Route
     allowed_stations = stations.slice(1...-1) # Так как стартовая и конечная точки маршрута не могут быть удалены.
     stations.delete(station) if allowed_stations.include?(station)
   end
+
+  def show_stations
+    @stations.each do |station|
+      puts station
+    end
+  end
 end
 
 class Train
