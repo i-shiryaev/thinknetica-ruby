@@ -1,5 +1,5 @@
 class Train
-  attr_reader :type, :speed, :route, :wagons
+  attr_reader :type, :speed, :route, :wagons, :number
 
   def initialize(number)
     @number = number
@@ -24,8 +24,10 @@ class Train
     @wagons << wagon if type == wagon.type
   end
 
-  def remove_wagon(wagon)
-    @wagons.delete(wagon)
+  def remove_wagon
+    # Так как функционал вагонов изменился после предыдущего урока, а сами
+    # вагоны не имеют уникального идентификатора - метод отцепляет последний вагон
+    @wagons.delete_at(-1) unless @wagons.empty?
   end
 
   def set_route(route)
