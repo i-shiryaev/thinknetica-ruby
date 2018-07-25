@@ -1,8 +1,9 @@
 class Train
   attr_reader :type, :speed, :route, :wagons, :number
 
-  def initialize(number)
+  def initialize(number, type)
     @number = number
+    @type = type
     @speed = 0
     @wagons = []
   end
@@ -24,10 +25,10 @@ class Train
     @wagons << wagon if type == wagon.type
   end
 
-  def remove_wagon
-    # Так как функционал вагонов изменился после предыдущего урока, а сами
-    # вагоны не имеют уникального идентификатора - метод отцепляет последний вагон
-    @wagons.delete_at(-1) unless @wagons.empty?
+  def remove_wagon(manufacturer)
+    # Удаляет только из массива @wagons для поезда, но вагон продолжает жить
+    # в массиве с аналогичном названием в MainMenu.
+    @wagons.reject! { |wagon| wagon.manufacturer == manufacturer }
   end
 
   def set_route(route)
