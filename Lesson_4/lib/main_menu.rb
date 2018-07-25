@@ -183,7 +183,7 @@ class MainMenu
       when "1"
         enter_manufacturer_name_message
         manufacturer = gets.chomp
-        wagon = create_wagon(train, manufacturer)
+        wagon = create_wagon_for_train(train, manufacturer)
         train.add_wagon(wagon)
         @wagons << wagon
         trains_menu
@@ -384,7 +384,7 @@ class MainMenu
   end
 
   # Вспомогательные методы для вагонов
-  def create_wagon(train, manufacturer)
+  def create_wagon_for_train(train, manufacturer)
     train.type == :cargo ? CargoWagon.new(manufacturer) : PassengerWagon.new(manufacturer)
   end
 
