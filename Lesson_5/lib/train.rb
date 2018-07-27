@@ -2,19 +2,19 @@ class Train
   include Manufacturer
   include InstanceCounter
   attr_reader :type, :speed, :route, :wagons, :number
-  @@trains = []
+  @@trains = {}
 
   def initialize(number, type)
     @number = number
     @type = type
     @speed = 0
     @wagons = []
-    @@trains << self
+    @@trains[number] = self
     register_instance
   end
 
   def self.find(number)
-    @@trains.detect { |train| train.number == number}
+    @@trains[number]
   end
 
   def increase_speed(speed)
