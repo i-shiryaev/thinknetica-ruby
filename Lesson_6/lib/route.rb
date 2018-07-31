@@ -29,6 +29,16 @@ class Route
   end
 
   def show_stations
-    stations.each { |station| puts station.name }
+    station_names = []
+    stations.each { |station| station_names << station.name }
+    station_names.join(", ")
+  end
+
+  protected
+
+  def validate!
+    raise "First station should be an object of Station." unless first_station.is_a? Station
+    raise "Last station should be an object of Station." unless last_station.is_a? Station
+    raise "First and last stations should be different." if first_station == last_station
   end
 end

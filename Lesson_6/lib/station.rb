@@ -29,4 +29,9 @@ class Station
   def select_trains(type)
     trains.select{ |train| train.type == type }
   end
+
+  def validate!
+    raise "Name should be a string." unless @name.is_a? String
+    raise "Name should not be empty." if @name.empty?
+  end
 end

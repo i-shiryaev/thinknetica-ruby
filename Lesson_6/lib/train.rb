@@ -6,6 +6,7 @@ class Train
   include Validation
   attr_reader :type, :speed, :route, :wagons, :number
   @@trains = {}
+  NUMBER_FORMAT = /^[a-z0-9]{3}-*[a-z0-9]{2}$/i
 
   def initialize(number, type)
     @number = number
@@ -68,11 +69,6 @@ class Train
 
   protected
 
-=begin
-  Так как три метода поиска станций не должны быть открыты для кода извне, вызываются
-  только внутри методов объекта класса, и должны использоваться
-  в наследуемых классах (CargoTrain, PassengerTrain) - отправляются в protected
-=end
   def current_station
     route.stations[@current_station_index]
   end
@@ -83,5 +79,9 @@ class Train
 
   def next_station
     route.stations[@current_station_index + 1] unless @current_station_index == route.stations.size - 1
+  end
+
+  def validate!
+    raise "Number's format should be correct." unless @number =~ NUMBER_FORMAT
   end
 end
