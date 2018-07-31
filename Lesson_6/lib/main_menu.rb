@@ -306,11 +306,11 @@ class MainMenu
 
   # Вспомогательные методы для поездов:
   def create_train
-    print "Введите номер нового поезда: "
+    message :enter_new_number
     loop do
       number = user_input
       if train_exist?(number)
-        print "Такой номер существует, введите другое значение: "
+        message number_already_exist
       else
         train = create_train_by_type(number)
         @trains << train

@@ -16,7 +16,9 @@ module OutputHelper
     stations_list: "Список станций:",
     trains_list: "Общий список поездов:",
     add_another_station: "Добавить станцию маршрута?",
-    enter: "Введите:"
+    enter: "Введите:",
+    enter_new_number: "Введите номер нового поезда:",
+    number_already_exist: "Такой номер существует, введите другое значение:"
   }
 
   def message(key)
