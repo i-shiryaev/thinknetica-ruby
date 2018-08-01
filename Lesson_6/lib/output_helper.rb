@@ -21,6 +21,47 @@ module OutputHelper
     number_already_exist: "Такой номер существует, введите другое значение:"
   }
 
+  CHOICES = {
+    root_menu: [
+      "управление станциями", "управление поездами",
+      "управление вагонами", "управление маршрутами", "выход"
+    ],
+    stations_menu: [
+      "создание станции", "список станций",
+      "перейти к управлению поездами", "вернуться в корневое меню", "выход"
+    ],
+    trains_menu: [
+      "создать новый поезд", "перейти к управлению станциями",
+      "назначить маршрут поезду", "управление вагонами",
+      "переместить поезд по маршруту", "открыть список станций и поездов",
+      "выход"
+    ],
+    wagons_menu: [
+      "создать новый вагон", "посмотреть производителей вагонов",
+      "вернуться в корневое меню", "выход"
+    ],
+    manage_wagons: [
+      "добавить вагон", "отцепить вагон",
+      "вернуться к управлению поездами"
+    ],
+    move_train: [
+      "отправить на следующую станцию", "отправить на предыдущую станцию",
+      "вернуться к управлению поездами", "выход"
+    ],
+    train_type: [
+      "пассажирский поезд", "грузовой поезд"
+    ],
+    yes_or_no: [
+      "да", "нет"
+    ],
+    wagon_type: [
+      "создать пассажирский вагон", "создать грузовой вагон"
+    ],
+    new_station: [
+      "создать новую станцию", "продолжить с текущими"
+    ]
+  }
+
   def message(key)
     puts MESSAGES[key]
   end
@@ -42,7 +83,7 @@ module OutputHelper
     puts "Для составления маршрута доступны следующие станции:"
     stations_list
     puts "Вы хотите создать новую cтанцию или продолжить с текущими?"
-    choices_list("создать новую станцию", "продолжить с текущими", false)
+    choices_list(:new_station)
   end
 
   def train_created_successfully(number)
@@ -62,17 +103,17 @@ module OutputHelper
 
   def enter_first_station
     print "Введите имя первой станции: "
-    input = gets.chomp
+    gets.chomp
   end
 
   def enter_last_station
     print "Введите имя последней станции: "
-    input = gets.chomp
+    gets.chomp
   end
 
   def enter_station_name
     print "Введите название станции: "
-    input = gets.chomp
+    gets.chomp
   end
 
   def show_manufacturers(manufacturers)
@@ -84,7 +125,17 @@ module OutputHelper
   end
 
   def format_choices(number, option)
-    puts "#{number} - #{option}"
+    option == "выход" ? "#{option} - для выхода из приложения" : "#{number} - #{option}"
+  end
+
+  def choices_list(menu)
+    message :enter
+    number = 1
+    CHOICES[menu].each do |option|
+      show_message format_choices(number, option)
+      number += 1
+    end
+    print "> "
   end
 
   def stations_and_trains_output(*args)
@@ -97,13 +148,17 @@ module OutputHelper
     end
   end
 
-  def wagon_created(manufacturer)
+  def manufacturers_list
+    manufacturers = []
+    @wagons.each do |wagon|
+      manufacturers << wagon.manufacturer
+    end
     message :blank_line
-    puts "Вагон от производителя #{manufacturer} успешно создан."
+    show_manufacturers(manufacturers)
   end
 
-  def exit_message
-    puts "выход - для выхода из приложения"
-    print "> "
+  def wagon_created(wagon)
+    message :blank_line
+    puts "Вагон от производителя #{wagon.manufacturer} успешно создан."
   end
 end

@@ -21,7 +21,7 @@ class MainMenu
   end
 
   def show_menu
-    choices_list("управление станциями", "управление поездами", "управление вагонами", "управление маршрутами", true)
+    choices_list(:root_menu)
     input = user_input
 
     loop do
@@ -48,10 +48,7 @@ class MainMenu
   def stations_menu
     message :separator
     message :stations_control
-    choices_list(
-      "создание станции", "список станций", "перейти к управлению поездами",
-      "вернуться в корневое меню", true
-    )
+    choices_list(:stations_menu)
     input = user_input
 
     loop do
@@ -76,11 +73,7 @@ class MainMenu
   def trains_menu
     message :separator
     message :trains_control
-    choices_list(
-      "создать новый поезд", "перейти к управлению станциями", "назначить маршрут поезду",
-      "управление вагонами", "переместить поезд по маршруту", "открыть список станций и поездов",
-      true
-    )
+    choices_list(:trains_menu)
     input = user_input
     loop do
       case input
@@ -159,10 +152,7 @@ class MainMenu
 
   # Для вызова из корневого меню
   def wagons_menu
-    choices_list(
-      "создать новый вагон", "посмотреть производителей вагонов",
-      "вернуться в корневое меню", true
-    )
+    choices_list(:wagons_menu)
     input = user_input
     loop do
       case input
@@ -186,7 +176,7 @@ class MainMenu
     message :select_train_from_list
     trains_list
     train = select_train(user_input)
-    choices_list("добавить вагон", "отцепить вагон", "вернуться к управлению поездами")
+    choices_list(:manage_wagons)
     input = user_input
     loop do
       case input
@@ -196,7 +186,7 @@ class MainMenu
         wagon = create_wagon_for_train(train, manufacturer)
         train.add_wagon(wagon)
         @wagons << wagon
-        wagon_created(manufacturer)
+        wagon_created(wagon)
         trains_menu
       when "2"
         message :enter_manufacturer_name
@@ -216,10 +206,7 @@ class MainMenu
     number = user_input
     train = select_train(number)
     routes_menu if train.route.nil?
-    choices_list(
-      "отправить на следующую станцию", "отправить на предыдущую станцию",
-      "вернуться к управлению поездами", true
-    )
+    choices_list(:move_train)
     input = user_input
     loop do
       case input
@@ -322,7 +309,7 @@ class MainMenu
   end
 
   def create_train_by_type(number)
-    choices_list("пассажирский поезд", "грузовой поезд", false)
+    choices_list(:train_type)
     input = user_input
     loop do
       case input
@@ -331,14 +318,18 @@ class MainMenu
           return PassengerTrain.new(number)
         rescue Exception => e
           show_message e.message
-          create_train
+          message :enter_another_value
+          number = user_input
+          retry
         end
       when "2"
         begin
           return CargoTrain.new(number)
         rescue Exception => e
           show_message e.message
-          create_train
+          message :enter_another_value
+          number = user_input
+          retry
         end
       else
         input = enter_another_value
@@ -381,7 +372,7 @@ class MainMenu
     end
     loop do
       message :add_another_station
-      choices_list("да", "нет", false)
+      choices_list(:yes_or_no)
       input = user_input
       case input
       when "1"
@@ -416,14 +407,18 @@ class MainMenu
         CargoWagon.new(manufacturer)
       rescue Exception => e
         show_message e.message
-        wagons_menu
+        message :enter_another_value
+        manufacturer = user_input
+        retry
       end
     else
       begin
         PassengerWagon.new(manufacturer)
       rescue Exception => e
         show_message e.message
-        wagons_menu
+        message :enter_another_value
+        manufacturer = user_input
+        retry
       end
     end
   end
@@ -431,43 +426,23 @@ class MainMenu
   def create_wagon_menu
     message :enter_manufacturer_name
     manufacturer = user_input
-    choices_list("создать пассажирский вагон", "создать грузовой вагон", false)
+    choices_list(:wagon_type)
     input = user_input
     loop do
       case input
       when "1"
-        create_wagon(manufacturer, :passenger)
-        wagon_created(manufacturer)
+        wagon = create_wagon(manufacturer, :passenger)
+        @wagons << wagon
+        wagon_created(wagon)
         wagons_menu
       when "2"
-        create_wagon(manufacturer, :cargo)
-        wagon_created(manufacturer)
+        wagon = create_wagon(manufacturer, :cargo)
+        @wagons << wagon
+        wagon_created(wagon)
         wagons_menu
       else
         input = enter_another_value
       end
-    end
-  end
-
-  def manufacturers_list
-    manufacturers = []
-    @wagons.each do |wagon|
-      manufacturers << wagon.manufacturer
-    end
-    message :blank_line
-    show_manufacturers(manufacturers)
-  end
-
-  # Прочие вспомогательные методы:
-  def choices_list(*options, extra_lines)
-    message :enter
-    number = 1
-    options.each do |option|
-      format_choices(number, option)
-      number += 1
-    end
-    if extra_lines
-      exit_message
     end
   end
 end
