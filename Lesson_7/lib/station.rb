@@ -36,14 +36,6 @@ class Station
     end
   end
 
-  def each_train_with_index
-    index = 1
-    @trains.each do |index, train|
-      yield(train)
-      index += 1
-    end
-  end
-
   private
 
   def validate!
