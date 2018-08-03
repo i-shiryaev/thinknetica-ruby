@@ -3,8 +3,8 @@ class PassengerWagon < Wagon
     super(manufacturer, :passenger, volume)
   end
 
-  def reserve_space(volume)
+  def reserve_space
     raise "Бронь недоступна." if available_space <= 0
-    super(volume)
+    super(1)
   end
 end

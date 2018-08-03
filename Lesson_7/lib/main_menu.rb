@@ -483,9 +483,8 @@ class MainMenu
           message :enter_volume
           volume = user_input.to_i
         end
-        volume ||= 1 # Для пассажирских поездов, так как места бронируются по одному
         begin
-          wagon.reserve_space(volume)
+          wagon.type == :cargo ? wagon.reserve_space(volume) : wagon.reserve_space
         rescue Exception => e
           show_message e.message
           trains_menu
