@@ -465,53 +465,32 @@ class MainMenu
       message :manufacturer_doesnt_exist
       wagons_menu_for_train
     end
-    wagon.type == :cargo ? manage_cargo_wagon(wagon) : manage_passenger_wagon(wagon)
+    manage_wagon(wagon)
   end
 
   def select_wagon(manufacturer, wagons)
     wagon = wagons.detect { |wagon| wagon.manufacturer == manufacturer }
   end
 
-  def manage_cargo_wagon(wagon)
-    cargo_wagon_info(wagon)
-    choices_list(:cargo_volume)
+  def manage_wagon(wagon)
+    wagon_info(wagon)
+    choices_list(:reserve_space)
     input = user_input
     loop do
       case input
       when "1"
-        message :enter_volume
-        amount = user_input.to_i
-        begin
-          wagon.reserve_volume(amount)
-        rescue Exception => e
-          show_message e.message
-          trains_menu
-          amount = user_input
+        if wagon.type == :cargo
+          message :enter_volume
+          volume = user_input.to_i
         end
-        message :volume_successfully_taken
-        trains_menu
-      when "2"
-        trains_menu
-      else
-        input = enter_another_value
-      end
-    end
-  end
-
-  def manage_passenger_wagon(wagon)
-    passenger_wagon_info(wagon)
-    choices_list(:passenger_seats)
-    input = user_input
-    loop do
-      case input
-      when "1"
+        volume ||= 1 # Для пассажирских поездов, так как места бронируются по одному
         begin
-          wagon.reserve_seat
+          wagon.reserve_space(volume)
         rescue Exception => e
           show_message e.message
           trains_menu
         end
-        message :seat_successfully_taken
+        message wagon.type == :cargo ? :volume_successfully_taken : :seat_successfully_taken
         trains_menu
       when "2"
         trains_menu

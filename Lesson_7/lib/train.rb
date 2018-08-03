@@ -78,7 +78,6 @@ class Train
   def each_wagon_with_index
     @wagons.each.with_index(1) do |wagon, index|
       yield(index, wagon)
-      index += 1
     end
   end
 

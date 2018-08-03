@@ -55,10 +55,7 @@ module OutputHelper
       "список вагонов", "зарезервировать место в вагоне",
       "вернуться к управлению поездами"
     ],
-    cargo_volume: [
-      "забронировать объём", "завершить бронирование"
-    ],
-    passenger_seats: [
+    reserve_space: [
       "забронировать место", "завершить бронирование"
     ],
     move_train: [
@@ -184,19 +181,18 @@ module OutputHelper
   def wagons_list(train)
     message :blank_line
     puts "Список вагонов поезда #{train.number}:"
-    # Наличие условия для пробега по объекту обосуловлено тем, что у CargoWagon
-    # и PassengerWagon различается название полей (например:
-    # avaliable_seats/available_volume, reserved_seats/reserved_volume)
-    if train.type == :cargo
-      train.each_wagon_with_index do |index, wagon|
-        puts "#{index}. Производитель: #{wagon.manufacturer}, тип: #{wagon.type},
-          количество свободного объёма: #{wagon.available_volume}, количество занятого объёма: #{wagon.reserved_volume}"
-      end
+    output_type = space_type(train.type)
+    train.each_wagon_with_index do |index, wagon|
+    puts "#{index}. Производитель: #{wagon.manufacturer}, тип: #{wagon.type},
+      количество #{output_type[:available_space]}: #{wagon.available_space}, количество #{output_type[:reserved_space]}: #{wagon.reserved_space}"
+    end
+  end
+
+  def space_type(type)
+    if type == :cargo
+      { available_space: "свободного объёма", reserved_space: "занятого объёма" }
     else
-      train.each_wagon_with_index do |index, wagon|
-        puts "#{index}. Производитель: #{wagon.manufacturer}, тип: #{wagon.type},
-          количество свободных мест: #{wagon.available_seats}, количество занятых мест: #{wagon.reserved_seats}"
-      end
+      { available_space: "свободных мест", reserved_space: "занятых мест" }
     end
   end
 
@@ -204,14 +200,10 @@ module OutputHelper
     message :blank_line
     puts "Вагон от производителя #{wagon.manufacturer} успешно создан."
   end
-
-  def cargo_wagon_info(wagon)
+  
+  def wagon_info(wagon)
+    output_type = space_type(wagon.type)
     puts "Вагон от производителя: #{wagon.manufacturer}"
-    puts "Количество свободного объёма: #{wagon.available_volume}, количество занятого объёма: #{wagon.reserved_volume}"
-  end
-
-  def passenger_wagon_info(wagon)
-    puts "Вагон от производителя: #{wagon.manufacturer}"
-    puts "Количество свободных мест: #{wagon.available_seats}, количество занятых мест: #{wagon.reserved_seats}"
+    puts "Количество #{output_type[:available_space]}: #{wagon.available_space}, количество #{output_type[:reserved_space]}: #{wagon.reserved_space}"
   end
 end
