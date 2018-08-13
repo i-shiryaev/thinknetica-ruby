@@ -5,12 +5,11 @@ module Validation
   end
 
   module ClassMethods
-
     def validate(name, validation_type, *validation_options)
       @validations ||= {}
       validations[name] = { validation_type: validation_type, validation_option: validation_options.first }
-      define_method(:validations) { self.class.instance_variable_get("@validations") }
-      define_method(:instance_name) { |name| instance_variable_get("@#{name}") }
+      define_method(:validations) { self.class.instance_variable_get('@validations') }
+      define_method(:instance_name) { |field_name| instance_variable_get("@#{field_name}") }
     end
 
     attr_reader :validations
@@ -36,13 +35,12 @@ module Validation
     private
 
     ERROR_TYPE = {
-      presence: "Should be present.",
-      format: "Format should be correct.",
-      type: "Type should be correct"
-    }
+      presence: 'Should be present.',
+      format: 'Format should be correct.',
+      type: 'Type should be correct'
+    }.freeze
 
-    def validate_presence(name, parameter = nil)
-      puts instance_name(name)
+    def validate_presence(name, _parameter)
       instance_name(name).empty?
     end
 

@@ -5,9 +5,9 @@ class Train
   include InstanceCounter
   include Validation
   NUMBER_FORMAT = /^[a-z0-9]{3}-*[a-z0-9]{2}$/i
-  
+
   attr_reader :type, :speed, :route, :wagons, :number
-  validate :number, :format , NUMBER_FORMAT
+  validate :number, :format, NUMBER_FORMAT
   @@trains = {}
 
   def initialize(number, type)
