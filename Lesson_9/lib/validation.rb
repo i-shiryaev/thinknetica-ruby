@@ -36,16 +36,16 @@ module Validation
 
     private
 
-    def validate_presence(name, _parameter)
-      raise 'Should be present.' if name.is_a?(String) && name.empty?
+    def validate_presence(value, _parameter)
+      raise 'Should be present.' if value.is_a?(String) && value.empty?
     end
 
-    def validate_format(name, format)
-      raise 'Format should be correct.' if name !~ format
+    def validate_format(value, format)
+      raise 'Format should be correct.' if value !~ format
     end
 
-    def validate_type(name, type)
-      raise 'Type should be correct' unless name.is_a?(type)
+    def validate_type(value, type)
+      raise 'Type should be correct' unless value.is_a?(type)
     end
   end
 end
