@@ -19,8 +19,8 @@ class Train
     @type = type
     @speed = 0
     @wagons = []
-    @@trains[number] = self
     validate!
+    @@trains[number] = self
     register_instance
   end
 

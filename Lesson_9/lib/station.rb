@@ -6,15 +6,15 @@ class Station
   include Validation
   extend Accessors
   attr_reader :trains, :name
-  validate :name, String
+  validate :name, :type, String
   validate :name, :presence
   @@stations = []
 
   def initialize(name)
     @name = name
     @trains = []
-    @@stations << self
     validate!
+    @@stations << self
     register_instance
   end
 
