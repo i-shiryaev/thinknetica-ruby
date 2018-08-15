@@ -1,12 +1,16 @@
 require_relative 'validation.rb'
+require_relative 'accessors.rb'
 
 class Train
   include Manufacturer
   include InstanceCounter
   include Validation
+  extend Accessors
   NUMBER_FORMAT = /^[a-z0-9]{3}-*[a-z0-9]{2}$/i
 
   attr_reader :type, :speed, :route, :wagons, :number
+  attr_accessor_with_history :driver
+  strong_attr_accessor :speed_limit, Integer
   validate :number, :format, NUMBER_FORMAT
   @@trains = {}
 

@@ -1,8 +1,10 @@
 require_relative 'validation.rb'
+require_relative 'accessors.rb'
 
 class Station
   include InstanceCounter
   include Validation
+  extend Accessors
   attr_reader :trains, :name
   validate :name, String
   validate :name, :presence

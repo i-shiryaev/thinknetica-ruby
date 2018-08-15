@@ -6,8 +6,9 @@ module Accessors
       define_method(name) { instance_variable_get(variable_name) }
       define_method("#{name}=") do |value|
         history = instance_variable_get(history_variable) || []
-        if instance_variable_get(variable_name)
-          instance_variable_set(history_variable, history << instance_variable_get(variable_name))
+        previous_value = instance_variable_get(variable_name)
+        if previous_value
+          instance_variable_set(history_variable, history << previous_value)
         end
         instance_variable_set(variable_name, value)
       end

@@ -10,7 +10,6 @@ module Validation
       validations[name] ||= []
       validations[name] << { validation_type: validation_type, validation_option: validation_options.first }
       define_method(:validations) { self.class.instance_variable_get('@validations') }
-      define_method(:instance_name) { |field_name| instance_variable_get("@#{field_name}") }
     end
 
     attr_reader :validations
@@ -18,11 +17,12 @@ module Validation
 
   module InstanceMethods
     def validate!
+      return false unless validations
       validations.each do |name, parameters|
         parameters.each do |validation|
           validation_type = validation[:validation_type]
           validation_option = validation[:validation_option]
-          send("validate_#{validation_type}", name, validation_option)
+          send("validate_#{validation_type}", instance_variable_get("@#{name}"), validation_option)
         end
       end
     end
@@ -37,15 +37,15 @@ module Validation
     private
 
     def validate_presence(name, _parameter)
-      raise 'Should be present.' if instance_name(name).is_a?(String) && instance_name(name).empty?
+      raise 'Should be present.' if name.is_a?(String) && name.empty?
     end
 
     def validate_format(name, format)
-      raise 'Format should be correct.' if instance_name(name) !~ format
+      raise 'Format should be correct.' if name !~ format
     end
 
     def validate_type(name, type)
-      raise 'Type should be correct' unless instance_name(name).is_a?(type)
+      raise 'Type should be correct' unless name.is_a?(type)
     end
   end
 end
