@@ -218,18 +218,18 @@ class MainMenu
     check_route(train)
     choices_list(:move_train)
     loop do
-      move_train_menu_select(user_input)
+      move_train_menu_select(train, user_input)
     end
   end
 
-  def move_train_menu_select(input)
+  def move_train_menu_select(train, input)
     case input
     when '1'
       train.move_to_next_station
-      move_train_menu
+      trains_menu
     when '2'
       train.move_to_previous_station
-      move_train_menu
+      trains_menu
     when '3' then trains_menu
     when 'выход' then exit
     else message :enter_another_value
